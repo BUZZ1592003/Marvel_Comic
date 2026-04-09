@@ -1,38 +1,36 @@
 @extends('layouts.app')
 
-@section('title','Dashboard')
-
-@section('header')
-  <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-    {{ __('Marvel Universe Dashboard') }}
-  </h2>
-@endsection
+@section('title','Dashboard | Marvel Vault')
 
 @section('content')
-  <div class="py-12">
-    <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-      <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-        <div class="p-6 text-gray-900">
-          <h3 class="text-2xl font-bold mb-4">
-            Welcome to Marvel Comics, {{ auth()->user()->name }}!
-          </h3>
-
-          <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div class="bg-red-600 text-white p-6 rounded-lg text-center">
-              <h4 class="text-xl font-bold">📚 Series</h4>
-              <a href="{{ route('series.index') }}" class="inline-block mt-2 bg-white text-red-600 px-4 py-2 rounded">Browse Series</a>
-            </div>
-            <div class="bg-blue-600 text-white p-6 rounded-lg text-center">
-              <h4 class="text-xl font-bold">📖 Comics</h4>
-              <a href="{{ route('comics.index') }}" class="inline-block mt-2 bg-white text-blue-600 px-4 py-2 rounded">Read Comics</a>
-            </div>
-            <div class="bg-yellow-600 text-white p-6 rounded-lg text-center">
-              <h4 class="text-xl font-bold">🦸 Characters</h4>
-              <a href="{{ route('characters.index') }}" class="inline-block mt-2 bg-white text-yellow-600 px-4 py-2 rounded">Meet Heroes</a>
-            </div>
-          </div>
+<div class="vault-page">
+    <section class="vault-page-hero reveal" style="background-image: linear-gradient(130deg, rgba(8,11,17,0.92), rgba(8,11,17,0.64)), url('{{ asset('images/vault/backgrounds/bg-neon-03.jpg') }}')">
+        <div class="container">
+            <p class="vault-kicker">Command Center</p>
+            <h1>Welcome back, {{ auth()->user()->name }}</h1>
+            <p>Resume reading, track your wishlist, and manage your collector journey.</p>
         </div>
-      </div>
-    </div>
-  </div>
+    </section>
+
+    <section class="vault-section reveal">
+        <div class="container search-hub-grid">
+            <a href="{{ route('comics.index') }}" class="bento">
+                <h3>Continue Reading</h3>
+                <p>Return to your in-progress issue stack.</p>
+            </a>
+            <a href="{{ route('comics.index') }}" class="bento">
+                <h3>Wishlist</h3>
+                <p>Manage saved comics and collector alerts.</p>
+            </a>
+            <a href="{{ route('characters.index') }}" class="bento">
+                <h3>Character Tracker</h3>
+                <p>Follow heroes and villains you care about.</p>
+            </a>
+            <a href="{{ route('series.index') }}" class="bento">
+                <h3>Series Follows</h3>
+                <p>Monitor arcs, events, and release cadence.</p>
+            </a>
+        </div>
+    </section>
+</div>
 @endsection

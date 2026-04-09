@@ -1,31 +1,35 @@
-{{-- Footer --}}
-     <footer class="footer">
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-section">
-                    <h3 class="footer-title">MARVEL COMICS</h3>
-                    <p>The ultimate destination for Marvel comic fans. Explore the greatest superhero stories ever told.</p>
-                </div>
-                <div class="footer-section">
-                    <h4>Quick Links</h4>
-                    <ul class="footer-links">
-                        <li><a href="#">New Releases</a></li>
-                        <li><a href="#">Popular Series</a></li>
-                        <li><a href="#">Character Guide</a></li>
-                    </ul>
-                </div>
-                <div class="footer-section">
-                    <h4>Follow Marvel</h4>
-                    <div class="social-links">
-                        <a href="#"><i class="fab fa-facebook"></i></a>
-                        <a href="#"><i class="fab fa-twitter"></i></a>
-                        <a href="#"><i class="fab fa-instagram"></i></a>
-                        <a href="#"><i class="fab fa-youtube"></i></a>
-                    </div>
-                </div>
+<footer class="site-footer">
+    <div class="container footer-grid">
+        <section>
+            <h3>Marvel Vault</h3>
+            <p>A fandom-first platform for collectors, readers, and continuity nerds. Curated with craft, not algorithm noise.</p>
+        </section>
+
+        <section>
+            <h4>Community</h4>
+            <a href="{{ route('characters.index') }}">Character Atlas</a>
+            <a href="{{ route('series.index') }}">Universe Threads</a>
+            <a href="{{ route('comics.index') }}">New This Week</a>
+        </section>
+
+        <section>
+            <h4>Collector Feed</h4>
+            <p>Get weekly notes on key issues, first appearances, and event tie-ins.</p>
+            <form class="footer-newsletter" action="#" method="post">
+                <input type="email" placeholder="you@comicverse.com" aria-label="Email">
+                <button type="submit">Subscribe</button>
+            </form>
+        </section>
+
+        <section>
+            <h4>Follow</h4>
+            <div class="social-row">
+                <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                <a href="#" aria-label="X"><i class="fab fa-x-twitter"></i></a>
+                <a href="#" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+                <a href="#" aria-label="Discord"><i class="fab fa-discord"></i></a>
             </div>
-            <div class="footer-bottom">
-                <p>&copy; 2025 Marvel Comics Clone - Built with Laravel for Educational Purposes</p>
-            </div>
-        </div>
-    </footer>
+            <small>&copy; {{ now()->year }} Marvel Vault. Crafted for readers.</small>
+        </section>
+    </div>
+</footer>

@@ -113,7 +113,7 @@ document.addEventListener('DOMContentLoaded', function() {
         loadingDiv.id = 'loading';
         loadingDiv.innerHTML = `
             <div class="loading-spinner"></div>
-            <p>Loading Marvel Comics...</p>
+            <p>Loading Heroic Comics...</p>
         `;
         loadingDiv.style.cssText = `
             position: fixed;
@@ -141,7 +141,7 @@ document.addEventListener('DOMContentLoaded', function() {
     style.textContent = `
         .loading-spinner {
             border: 3px solid #2D2D2D;
-            border-top: 3px solid #ED1D24;
+            border-top: 3px solid var(--marvel-red, #ED1D24);
             border-radius: 50%;
             width: 40px;
             height: 40px;
@@ -157,7 +157,7 @@ document.addEventListener('DOMContentLoaded', function() {
     document.head.appendChild(style);
 
     // Comic Reader Functionality
-    const readButtons = document.querySelectorAll('.btn-marvel');
+    const readButtons = document.querySelectorAll('.btn-marvel, .btn-heroic');
     readButtons.forEach(button => {
         if (button.textContent.includes('Read')) {
             button.addEventListener('click', function(e) {
@@ -201,5 +201,5 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    console.log('Marvel Comics UI Loaded Successfully! 🦸‍♂️');
+    console.log('Heroic Comics UI Loaded Successfully! 🦸‍♂️');
 });

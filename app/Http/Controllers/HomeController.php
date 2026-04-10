@@ -6,6 +6,7 @@ use App\Models\Character;
 use App\Models\Comic;
 use App\Models\Series;
 use Illuminate\Http\Request;
+use Throwable;
 
 class HomeController extends Controller
 {
@@ -14,49 +15,6 @@ class HomeController extends Controller
      */
     public function index(Request $request)
     {
-        $featured = Comic::published()
-            ->with(['series', 'characters'])
-            ->featured()
-            ->orderByDesc('release_date')
-            ->take(4)
-            ->get();
-
-        if ($featured->isEmpty()) {
-            $featured = Comic::published()
-                ->with(['series', 'characters'])
-                ->orderByDesc('rating')
-                ->orderByDesc('release_date')
-                ->take(4)
-                ->get();
-        }
-
-        $trending = Comic::published()
-            ->with('series')
-            ->orderByDesc('rating_count')
-            ->orderByDesc('rating')
-            ->take(8)
-            ->get();
-
-        $latest = Comic::published()
-            ->with('series')
-            ->orderByDesc('release_date')
-            ->take(8)
-            ->get();
-
-        $characters = Character::query()
-            ->where('status', 'active')
-            ->orderByDesc('strength')
-            ->orderByDesc('intelligence')
-            ->take(6)
-            ->get();
-
-        $universes = Series::query()
-            ->withCount('comics')
-            ->orderByDesc('popularity_score')
-            ->orderByDesc('average_rating')
-            ->take(5)
-            ->get();
-
         $publishersAndArcs = collect([
             [
                 'title' => 'Marvel Core',
@@ -78,18 +36,95 @@ class HomeController extends Controller
             ],
         ]);
 
-        $recommendationLanes = [
-            [
-                'title' => 'Because You Like Spider-Man',
-                'description' => 'Fast-paced, high-stakes issues with heart and street-level intensity.',
-                'items' => $trending->take(4),
-            ],
-            [
-                'title' => 'Dark Storylines You May Love',
-                'description' => 'Brooding arcs, anti-heroes, and morally complex turning points.',
-                'items' => $latest->sortByDesc('rating')->take(4)->values(),
-            ],
-        ];
+        try {
+            $featured = Comic::published()
+                ->with(['series', 'characters'])
+                ->featured()
+                ->orderByDesc('release_date')
+                ->take(4)
+                ->get();
+
+            if ($featured->isEmpty()) {
+                $featured = Comic::published()
+                    ->with(['series', 'characters'])
+                    ->orderByDesc('rating')
+                    ->orderByDesc('release_date')
+                    ->take(4)
+                    ->get();
+            }
+
+            $trending = Comic::published()
+                ->with('series')
+                ->orderByDesc('rating_count')
+                ->orderByDesc('rating')
+                ->take(8)
+                ->get();
+
+            $latest = Comic::published()
+                ->with('series')
+                ->orderByDesc('release_date')
+                ->take(8)
+                ->get();
+
+            $characters = Character::query()
+                ->where('status', 'active')
+                ->orderByDesc('strength')
+                ->orderByDesc('intelligence')
+                ->take(6)
+                ->get();
+
+            $universes = Series::query()
+                ->withCount('comics')
+                ->orderByDesc('popularity_score')
+                ->orderByDesc('average_rating')
+                ->take(5)
+                ->get();
+
+            $recommendationLanes = [
+                [
+                    'title' => 'Because You Like Spider-Man',
+                    'description' => 'Fast-paced, high-stakes issues with heart and street-level intensity.',
+                    'items' => $trending->take(4),
+                ],
+                [
+                    'title' => 'Dark Storylines You May Love',
+                    'description' => 'Brooding arcs, anti-heroes, and morally complex turning points.',
+                    'items' => $latest->sortByDesc('rating')->take(4)->values(),
+                ],
+            ];
+
+            $stats = [
+                'comics' => Comic::count(),
+                'characters' => Character::count(),
+                'series' => Series::count(),
+                'active_readers' => 12457,
+            ];
+        } catch (Throwable $e) {
+            report($e);
+            $featured = collect();
+            $trending = collect();
+            $latest = collect();
+            $characters = collect();
+            $universes = collect();
+            $recommendationLanes = [
+                [
+                    'title' => 'Because You Like Spider-Man',
+                    'description' => 'Fast-paced, high-stakes issues with heart and street-level intensity.',
+                    'items' => collect(),
+                ],
+                [
+                    'title' => 'Dark Storylines You May Love',
+                    'description' => 'Brooding arcs, anti-heroes, and morally complex turning points.',
+                    'items' => collect(),
+                ],
+            ];
+            $stats = [
+                'comics' => 0,
+                'characters' => 0,
+                'series' => 0,
+                'active_readers' => 12457,
+            ];
+        }
 
         if ($featured->isEmpty() && $trending->isEmpty() && $latest->isEmpty()) {
             $demoComics = collect(range(1, 8))->map(function (int $i) {
@@ -149,13 +184,6 @@ class HomeController extends Controller
                 ],
             ];
         }
-
-        $stats = [
-            'comics' => Comic::count(),
-            'characters' => Character::count(),
-            'series' => Series::count(),
-            'active_readers' => 12457,
-        ];
 
         return view('home', [
             'featured' => $featured,

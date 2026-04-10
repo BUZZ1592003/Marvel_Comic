@@ -1,6 +1,14 @@
 {
   "version": 2,
   "framework": null,
+  "env": {
+    "APP_ENV": "production",
+    "APP_DEBUG": "false",
+    "LOG_CHANNEL": "stderr",
+    "SESSION_DRIVER": "cookie",
+    "CACHE_STORE": "array",
+    "QUEUE_CONNECTION": "sync"
+  },
   "buildCommand": "npm run build",
   "outputDirectory": "public/build",
   "functions": {

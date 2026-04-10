@@ -18,31 +18,30 @@ Route::get('test', function() {
     return response()->json(['message' => 'API is working']);
 });
 
+    // User resource routes
+Route::apiResource('users', UserController::class)->names('api.users');
 
-// User resource routes
-Route::apiResource('users', UserController::class);
-
-// Additional user routes
+    // Additional user routes
 Route::prefix('users/{user}')->group(function () {
-    Route::get('/dashboard', [UserController::class, 'dashboard'])->name('users.dashboard');
-    Route::get('/favorites', [UserController::class, 'favorites'])->name('users.favorites');
-    Route::get('/reading-history', [UserController::class, 'readingHistory'])->name('users.reading-history');
-    Route::get('/followed-series', [UserController::class, 'followedSeries'])->name('users.followed-series');
+    Route::get('/dashboard', [UserController::class, 'dashboard'])->name('api.users.dashboard');
+    Route::get('/favorites', [UserController::class, 'favorites'])->name('api.users.favorites');
+    Route::get('/reading-history', [UserController::class, 'readingHistory'])->name('api.users.reading-history');
+    Route::get('/followed-series', [UserController::class, 'followedSeries'])->name('api.users.followed-series');
 });
 
-// Public resources
-Route::apiResource('series', SeriesController::class);
-Route::apiResource('comics', ComicController::class);       // working
-Route::apiResource('characters', CharacterController::class); // working
+    // Public resources
+Route::apiResource('series', SeriesController::class)->names('api.series');
+Route::apiResource('comics', ComicController::class)->names('api.comics');       // working
+Route::apiResource('characters', CharacterController::class)->names('api.characters'); // working
 
-// Auth-required resources
+    // Auth-required resources
 Route::middleware('auth:sanctum')->group(function () {
-    Route::apiResource('favorites', FavoriteController::class);
-    Route::apiResource('ratings', RatingController::class);
-    Route::apiResource('reading-history', ReadingHistoryController::class);
+    Route::apiResource('favorites', FavoriteController::class)->names('api.favorites');
+    Route::apiResource('ratings', RatingController::class)->names('api.ratings');
+    Route::apiResource('reading-history', ReadingHistoryController::class)->names('api.reading-history');
 });
 
-//comic pages
+    //comic pages
 Route::get('comics/{comic}/pages', [ComicPageController::class, 'index']);
 Route::post('comic-pages', [ComicPageController::class, 'store']);
 Route::put('comic-pages/{page}', [ComicPageController::class, 'update']);
